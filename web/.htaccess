@@ -1,0 +1,16 @@
+# prevent directory listings
+Options -Indexes
+# follow symbolic links
+Options FollowSymlinks
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} ^/back/$
+RewriteRule ^(back)/$ /$1 [R=301,L]
+RewriteCond %{REQUEST_URI} ^/back
+RewriteRule ^back(/.+)?$ back/$1 [L,PT]
+
+# If a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule . index.php
