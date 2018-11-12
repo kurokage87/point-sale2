@@ -50,6 +50,16 @@ class DetailBeliSupplierController extends Controller
         $model->save();
         return $this->redirect('proses');   
     }
+    
+    public function actionPersetujuanOwner(){
+        $searchModel = new DetailBeliSupplierSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index',[
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+        ]);
+    }
 
     /**
      * Displays a single DetailBeliSupplier model.

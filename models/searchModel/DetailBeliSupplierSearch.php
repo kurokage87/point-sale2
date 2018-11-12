@@ -45,12 +45,16 @@ class DetailBeliSupplierSearch extends DetailBeliSupplier
         $ctrl = Yii::$app->controller->action->id;
         if ($ctrl == 'index'):
             if(\Yii::$app->user->identity->level == \app\models\User::supplier):
-            $query = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => DetailBeliSupplier::order])->orderBy('id desc');
+            $query = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => DetailBeliSupplier::setujui_owner])->orderBy('id desc');
+            elseif(\Yii::$app->user->identity->level == \app\models\User::pimpinan):
+                $query = DetailBeliSupplier::find()->joinWith('barang')->andWhere(['status' => DetailBeliSupplier::order])->orderBy('id desc');
             else:
                 $query = DetailBeliSupplier::find()->joinWith('barang')->orderBy('id desc');
             endif;
         elseif($ctrl == 'proses'):
             $query = DetailBeliSupplier::find()->where(['barang_id' => $barang->id]);
+        elseif($ctrl == 'persetujuan-owner'):
+             $query = DetailBeliSupplier::find()->joinWith('barang')->andWhere(['status' => DetailBeliSupplier::order])->orderBy('id desc');
         endif;
         // add conditions that should always apply here
 

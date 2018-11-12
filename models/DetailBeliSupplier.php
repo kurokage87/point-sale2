@@ -21,6 +21,8 @@ use Yii;
 class DetailBeliSupplier extends \yii\db\ActiveRecord
 {
     const order = 1;
+    const setujui_owner=6;
+    const tolak_owner=7;
     const di_proses_supplier = 2;
     const dikirim = 3;
     const ditolak = 4;

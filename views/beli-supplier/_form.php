@@ -45,7 +45,7 @@ $ctrl = Yii::$app->controller->action->id;
                 <?= Html::activeHiddenInput($modelDetail, "[$i]updateType", ['class' => 'update-type']) ?>
             
                 <div class="col-md-3">
-                    <?= $form->field($modelDetail, "[$i]barang_id")->label('Nama Barang')->dropDownList(yii\helpers\ArrayHelper::map(app\models\Barang::find()->all(), 'id', 'nama_barang'),[
+                    <?= $form->field($modelDetail, "[$i]barang_id")->label('Nama Barang')->dropDownList(yii\helpers\ArrayHelper::map(app\models\Barang::find()->all(), 'id', 'nama_barang', 'user.username'),[
                     'prompt' => 'Silahkan Pilih'
                 ])
                 ?>
