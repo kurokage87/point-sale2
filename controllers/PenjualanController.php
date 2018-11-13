@@ -8,6 +8,7 @@ use app\models\searchModel\PenjualanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
 /**
  * PenjualanController implements the CRUD actions for Penjualan model.
  */

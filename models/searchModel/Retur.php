@@ -46,6 +46,8 @@ class Retur extends ReturModel
         if (Yii::$app->controller->action->id == 'list'){
             if(\Yii::$app->user->identity->level == \app\models\User::supplier):
                 $query = ReturModel::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => Retur::retur_baru]);
+            elseif(\Yii::$app->user->identity->level == \app\models\User::pimpinan):
+                $query = ReturModel::find()->joinWith('barang')->where(['status' => Retur::selesai]);
             else:
                 $query = ReturModel::find();
             endif;

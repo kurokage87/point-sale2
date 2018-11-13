@@ -12,7 +12,24 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="penjualan-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <table class="table-responsive">
+        <tbody>
+            <tr>
+                <td style="padding: 1%;text-align: center;vertical-align: middle;width: 80px;height: 60px">
+                    <img src="<?= Yii::getAlias('@web/')?>images/logo.jpg" height="100px" width="150px" />
+                </td>
+                <td style="vertical-align: top;padding-left: 5%;padding: 2%;">
+                    <h1>Kripik Balado Mahkota</h1>
+                    <p>
+                        Alamat : Jl. Raya Padang Bukittinggi KM 19, Muaro Kasang, Batang Anai, Padang Pariaman, Sumatera Barat 25586<br>
+                        No telp : 0751-483846 <br>
+                        Email : cv_mahkota@yahoo.co.id<br>
+                        Instagram : @kripikbaladomahkotas
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     
     <table class="table table-bordered table-striped table-responsive">
         <thead>
@@ -54,6 +71,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </tbody>
     </table>
     
-    
+    <table class="table-responsive">
+        <tbody>
+            <tr>
+                <td style="padding: 1%;text-align: center;vertical-align: middle;width: 80px;height: 60px">
+                    Paraf Pemilik<p><br/><img src="<?= Yii::getAlias('@web/')?>images/ttdee.png" height="100px" width="150px" /></p>
+                   
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 </div>

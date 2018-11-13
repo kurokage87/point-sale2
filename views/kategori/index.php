@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\searchModel\KategoriSearch */
@@ -14,22 +14,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Kategori'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+     <div class="row">
+        <div class="col-md-12">
+        <p>
+            <?= Html::a('Create Kategori', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <div class="text-right">
+                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+           
+            <br />
+        </div>
+        </div>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
+        'panel' => ['type' => 'danger'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'nama_kategori',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'kartik\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
