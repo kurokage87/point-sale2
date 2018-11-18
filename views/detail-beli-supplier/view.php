@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?php if(Yii::$app->user->identity->level == \app\models\User::Admin):?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -23,6 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php else:
+            echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+        endif;
+?>
     </p>
 
     <?= DetailView::widget([
@@ -35,8 +40,33 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'barang.nama_barang',
             'jumlah',
+            [
+                'label' => 'Harga Satuan',
+                'value' => function($model){
+                return 'Rp. '.number_format($model->barang->harga_modal);
+                }
+            ],
+            [
+               'label' => 'Total Harga Beli',
+                'value' => function($data){
+                    $jml = $data->jumlah;
+                    $hbeli = $data->barang->harga_modal;
+                    $tot = $jml * $hbeli;
+                    return 'Rp. '. number_format($tot);
+                }
+                
+            ],
 //            'beli_sup_id',
-            'tgl_kadaluarsa',
+            [
+                'label' => 'Tanggal Kadaluarsa',
+                'value' => function($data){
+                   if ($data->tgl_kadaluarsa == NULL):
+                       return 'Sedang Proses';
+                   else:
+                       return $data->tgl_kadaluarsa;
+                   endif;
+                }
+            ],
             [
                 'label' => 'Status Pesanan',
                 'value' => function($data){
@@ -50,6 +80,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 'Barang sedang Di Kirim';
                     elseif($data->status == app\models\DetailBeliSupplier::selesai):
                         return 'Selesai';
+                    elseif($data->status == app\models\DetailBeliSupplier::setujui_owner):
+                        return 'Disetujui Owner';
+                    elseif($data->status== app\models\DetailBeliSupplier::tolak_owner):
+                        return 'Ditolak Owner';
                     endif;
                 }
             ],

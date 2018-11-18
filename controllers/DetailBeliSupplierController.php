@@ -44,11 +44,42 @@ class DetailBeliSupplierController extends Controller
         ]);
     }
     
+    public function actionProsesSelesai(){
+        $searchModel = new DetailBeliSupplierSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index',[
+           'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
+        ]);
+    }
+    
+    public function actionTerimaKaryawan(){
+        $searchModel = new DetailBeliSupplierSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index',[
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
+        ]);
+    }
+        
+    
     public function actionProsesSupplier($id){
         $model = $this->findModel($id);
         $model->status = DetailBeliSupplier::di_proses_supplier;
         $model->save();
         return $this->redirect('proses');   
+    }
+    
+    public function actionStatusPesan(){
+        $searchModel = new DetailBeliSupplierSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index',[
+            'searchModel' => $searchModel,
+            'dataProvider'=> $dataProvider
+        ]);
     }
     
     public function actionPersetujuanOwner(){
@@ -59,6 +90,12 @@ class DetailBeliSupplierController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
+    }
+    public function actionSelesai($id){
+        $model = $this->findModel($id);
+        $model->status = DetailBeliSupplier::selesai;
+        $model->save();
+        return $this->redirect('terima-karyawan');
     }
 
     /**

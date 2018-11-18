@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'barang_id',
                     'value' => 'barang.nama_barang'
                 ],
-                'jumlah',
+//                'jumlah',
 //            'beli_sup_id',
                 //'tgl_kadaluarsa',
                 [
@@ -55,14 +55,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             return 'Barang sedang Di Kirim';
                         elseif ($data->status == app\models\DetailBeliSupplier::selesai):
                             return 'Selesai';
+                        elseif ($data->status == app\models\DetailBeliSupplier::setujui_owner):
+                            return 'Disetujui Owner';
+                        elseif ($data->status == app\models\DetailBeliSupplier::tolak_owner):
+                            return 'Ditolak Owner';
                         endif;
                     }
                 ],
                 [
                     'label' => 'Action',
+                    'visible' => Yii::$app->controller->action->id != 'proses',
                     'format' => 'html',
                     'value' => function($data) {
-                        if ($data->status == app\models\DetailBeliSupplier::order) {
+                        if ($data->status == app\models\DetailBeliSupplier::setujui_owner) {
                             return Html::a('Proses', ['proses-supplier', 'id' => $data->id], ['class' => 'btn btn-success btn-xs']) . '<br>' .
                                     Html::a('View', ['view', 'id' => $data->id], ['class' => 'btn btn-primary btn-xs']) . '<br>' .
                                     Html::a('Update', ['update', 'id' => $data->id], ['class' => 'btn btn-info btn-xs']);
@@ -158,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'barang_id',
                     'value' => 'barang.nama_barang'
                 ],
-                'jumlah',
+//                'jumlah',
 //            'beli_sup_id',
                 //'tgl_kadaluarsa',
                 [
@@ -174,10 +179,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             return 'Barang sedang Di Kirim';
                         elseif ($data->status == app\models\DetailBeliSupplier::selesai):
                             return 'Selesai';
+                        elseif ($data->status == app\models\DetailBeliSupplier::setujui_owner):
+                            return 'Disetujui Owner';
+                        elseif ($data->status == app\models\DetailBeliSupplier::tolak_owner):
+                            return 'Ditolak Owner';
                         endif;
                     }
                 ],
+                [
+                    'label' => 'Action',
+                    'format' => 'html',
+                    'visible' => Yii::$app->controller->action->id == 'terima-karyawan' && Yii::$app->user->identity->level == \app\models\User::karyawan,
+                    'value' => function($data){
+                        return \yii\bootstrap\Html::a('Diterima', ['detail-beli-supplier/selesai', 'id'=>$data->id],['class' => 'btn btn-success']);
+                    }
+                ],
                 ['class' => 'kartik\grid\ActionColumn',
+                    'visible' => Yii::$app->controller->action->id != 'status-pesan' && Yii::$app->user->identity->level == \app\models\User::pimpinan,
                     'template' => '{view}{update}'],
             ],
         ]);

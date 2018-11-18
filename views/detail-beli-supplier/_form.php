@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use dosamigos\datepicker\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\DetailBeliSupplier */
@@ -17,6 +18,17 @@ use yii\widgets\ActiveForm;
         app\models\DetailBeliSupplier::ditolak => 'Di Tolak',
         app\models\DetailBeliSupplier::dikirim => 'Di Terima',
     ]) ?>
+    <?php if($model->status == app\models\DetailBeliSupplier::di_proses_supplier):
+      echo $form->field($model, 'tgl_kadaluarsa')->widget(
+    DatePicker::className(), [
+         'inline' => false, 
+        'clientOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd'
+        ]
+]);  
+    endif;
+?>
     <?php
     else : ?>
         <?= $form->field($model, 'status')->dropDownList([

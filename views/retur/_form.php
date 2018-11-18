@@ -12,19 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="form-group field-retur-barang_id">
-        <label class="control-label" for="retur-barang_id">Nama Barang</label>
-        <select id="retur-barang_id" class="form-control" name="Retur[barang_id]">
-            <?php
-            $barang = app\models\Barang::find()->all();
-            foreach ($barang as $b) :
-            ?>
-            <option value="<?=$b->id?>"><?=$b->nama_barang.' - '.$b->user->username?></option>
-            <?php endforeach;?>
-        </select>
-
-        <div class="help-block"></div>
-    </div>
+   <?= $form->field($model, 'barang_id')->label('Nama Barang')->dropDownList(yii\helpers\ArrayHelper::map(app\models\Barang::find()->all(), 'id', 'nama_barang', 'user.username'),[
+                    'prompt' => 'Silahkan Pilih'
+                ])?>
 
     <?= $form->field($model, 'qty')->textInput() ?>
 

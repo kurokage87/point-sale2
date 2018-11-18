@@ -64,14 +64,14 @@ class DetailBeliSupplier extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tgl_kadaluarsa','status'],'safe'],
+            [['tgl_kadaluarsa'],'safe'],
             ['updateType', 'required', 'on' => self::SCENARIO_BATCH_UPDATE],
             ['updateType', 
                 'in',
                 'range' => [self::UPDATE_TYPE_CREATE, self::UPDATE_TYPE_UPDATE, self::UPDATE_TYPE_DELETE],
                 'on' => self::SCENARIO_BATCH_UPDATE],
             ['beli_sup_id','required', 'except' => self::SCENARIO_BATCH_UPDATE],
-            [['barang_id', 'jumlah', 'beli_sup_id'], 'integer'],
+            [['barang_id', 'jumlah', 'beli_sup_id','status'], 'integer'],
             [['no_faktur'], 'string', 'max' => 255],
             [['barang_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barang::className(), 'targetAttribute' => ['barang_id' => 'id']],
             [['beli_sup_id'], 'exist', 'skipOnError' => true, 'targetClass' => BeliSupplier::className(), 'targetAttribute' => ['beli_sup_id' => 'id']],

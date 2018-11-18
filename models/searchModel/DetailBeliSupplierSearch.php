@@ -42,6 +42,8 @@ class DetailBeliSupplierSearch extends DetailBeliSupplier
     public function search($params)
     {
         $barang = \app\models\Barang::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+        $profil = \app\models\Supplier::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+//         \yii\helpers\VarDumper::dump($profil);die;
         $ctrl = Yii::$app->controller->action->id;
         if ($ctrl == 'index'):
             if(\Yii::$app->user->identity->level == \app\models\User::supplier):
@@ -52,9 +54,21 @@ class DetailBeliSupplierSearch extends DetailBeliSupplier
                 $query = DetailBeliSupplier::find()->joinWith('barang')->orderBy('id desc');
             endif;
         elseif($ctrl == 'proses'):
-            $query = DetailBeliSupplier::find()->where(['barang_id' => $barang->id]);
+//            $query = DetailBeliSupplier::find()->where(['barang_id' => $barang->id]);
+             $query = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->orderBy('id desc');
+        elseif($ctrl == 'proses-selesai'):
+            $query = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => DetailBeliSupplier::di_proses_supplier])->orderBy('id desc');
         elseif($ctrl == 'persetujuan-owner'):
              $query = DetailBeliSupplier::find()->joinWith('barang')->andWhere(['status' => DetailBeliSupplier::order])->orderBy('id desc');
+        elseif($ctrl == 'status-pesan'):
+            if(Yii::$app->user->identity->level == \app\models\User::pimpinan):
+                $query = DetailBeliSupplier::find()->orderBy('id desc');
+            else:
+                $query = DetailBeliSupplier::find()->joinWith('beliSup')->where(['beli_supplier.supplier_id' => $profil->id])->orderBy('id desc');
+               
+            endif;
+            elseif($ctrl == 'terima-karyawan'):
+                $query = DetailBeliSupplier::find()->where(['detail_beli_supplier.status'=> DetailBeliSupplier::dikirim])->orderBy('id desc');
         endif;
         // add conditions that should always apply here
 

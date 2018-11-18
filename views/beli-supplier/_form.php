@@ -35,35 +35,23 @@ $ctrl = Yii::$app->controller->action->id;
     ]) ?>
     
     <?php else : ?>
-    <?= $form->field($model, 'no_faktur')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'no_faktur')->textInput(['maxlength' => true, 'readonly'=>'readonly']) ?>
     
-    <?= $form->field($model, 'kode_pembelian')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'kode_pembelian')->textInput(['maxlength' => true, 'readonly'=>'readonly']) ?>
     
      <?php foreach ($modelDetailBelis as $i => $modelDetail) : ?>
         <div class="row beli-detail beli-detail-<?= $i ?>">
                 <?= Html::activeHiddenInput($modelDetail, "[$i]id") ?>
                 <?= Html::activeHiddenInput($modelDetail, "[$i]updateType", ['class' => 'update-type']) ?>
             
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <?= $form->field($modelDetail, "[$i]barang_id")->label('Nama Barang')->dropDownList(yii\helpers\ArrayHelper::map(app\models\Barang::find()->all(), 'id', 'nama_barang', 'user.username'),[
                     'prompt' => 'Silahkan Pilih'
                 ])
                 ?>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-5">
                 <?= $form->field($modelDetail, "[$i]jumlah")?>
-                </div>
-                <div class="col-md-3">
-                    <?= $form->field($modelDetail, "[$i]tgl_kadaluarsa")->widget(
-                            \dosamigos\datepicker\DatePicker::className(), [
-                            // inline too, not bad
-                             'inline' => false, 
-                             // modify template for custom rendering
-                            'clientOptions' => [
-                                'autoclose' => true,
-                                'format' => 'yyyy-mm-dd'
-                            ]
-                    ])?>
                 </div>
                 <div class="col-md-2">
                  <?= Html::button('x', ['class' => 'delete-button btn btn-danger btn-md', 'data-target' => "beli-detail-$i"]) ?>
@@ -75,7 +63,7 @@ $ctrl = Yii::$app->controller->action->id;
     
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-        <?= Html::submitButton('Add row', ['name' => 'addRow', 'value' => 'true', 'class' => 'btn btn-info']) ?>
+        <?= Html::submitButton('Tambah Pesanan', ['name' => 'addRow', 'value' => 'true', 'class' => 'btn btn-info']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
