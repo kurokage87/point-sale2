@@ -51,8 +51,14 @@ class Retur extends ReturModel
             else:
                 $query = ReturModel::find();
             endif;
-        }elseif (Yii::$app->controller->action->id == 'proses') {
-            $query = ReturModel::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id]);
+        }elseif (Yii::$app->controller->action->id == 'list-proses') {
+            $query = ReturModel::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => Retur::diproses]);
+        }elseif(\Yii::$app->controller->action->id == 'track'){
+            if (\Yii::$app->user->identity->level == \app\models\User::supplier){
+                $query = ReturModel::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id]);
+            }else{
+                $query = ReturModel::find();
+            }
         } else {
             $query = ReturModel::find();
         }

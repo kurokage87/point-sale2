@@ -63,6 +63,16 @@ class ReturController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionTrack(){
+        $searchModel = new ReturSearch();
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+        
+        return $this->render('index',[
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Displays a single Retur model.
@@ -87,6 +97,20 @@ class ReturController extends Controller
         $model->status = Retur::diproses;
         $model->save();
        return $this->redirect('list');
+    }
+    
+    public function actionKirim($id){
+        $model =$this->findModel($id);
+        $model->status = Retur::dikirim;
+        $model->save();
+        return $this->redirect('list-proses');
+    }
+    
+    public function actionSelesai($id){
+        $model = $this->findModel($id);
+        $model->status = Retur::selesai;
+        $model->save();
+        return $this->redirect('index');
     }
     
     public function actionCreate()

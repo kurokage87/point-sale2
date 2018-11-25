@@ -64,11 +64,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new \app\models\searchModel\DetailBeliSupplierSearch();
-        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+//        $searchModel = new \app\models\searchModel\DetailJual();
+//        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+        $dataProvider = new \yii\data\ActiveDataProvider([
+		'query' => (new \yii\db\Query())->select('SUM(d.qty) barang, b.nama_barang')->from('detail_jual d')->join('inner join', 'barang b', 'd.barang_id = b.id')->groupBy('barang_id'),
+	    'pagination' => false
+	]);
         
         return $this->render('index',[
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider
         ]);
     }

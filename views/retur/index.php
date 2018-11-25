@@ -50,6 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         endif;
                     }
                 ],
+                [
+                    'label' => 'Action',
+                    'format' => 'html',
+                    'value' => function($data){
+                        if($data->status == Retur::dikirim):
+                            return Html::a('Selesai', ['retur/selesai','id' => $data->id], ['class' => 'btn btn-success']);
+                        else:
+                            return 'Tidak Ada Aksi';
+                        endif;
+                    }
+                ]
             ],
         ]);
         ?>
@@ -86,12 +97,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html',
                     'value' => function($data) {
                         if ($data->status == Retur::diproses):
-                            return Html::a('View', ['view', 'id' => $data->id], ['class' => 'btn btn-info btn-xs']) . ' ' .
-                                    Html::a('Update', ['update', 'id' => $data->id], ['class' => 'btn btn-primary btn-xs']);
-                        else:
+                            return Html::a('View', ['view', 'id' => $data->id], ['class' => 'btn btn-info btn-xs']);
+//                                    Html::a('Update', ['update', 'id' => $data->id], ['class' => 'btn btn-primary btn-xs']);
+                        elseif($data->status == Retur::retur_baru):
+                            
                             return Html::a('Proses', ['proses', 'id' => $data->id], ['class' => 'btn btn-success btn-xs']) . ' ' .
-                                    Html::a('View', ['view', 'id' => $data->id], ['class' => 'btn btn-info btn-xs']) . ' ' .
-                                    Html::a('Update', ['update', 'id' => $data->id], ['class' => 'btn btn-primary btn-xs']);
+                                    Html::a('View', ['view', 'id' => $data->id], ['class' => 'btn btn-info btn-xs']);
+//                                    Html::a('Update', ['update', 'id' => $data->id], ['class' => 'btn btn-primary btn-xs']);
+                        else:
+                            return "";
                         endif;
                     }
                 ],

@@ -1,30 +1,20 @@
 <?php
 
 /* @var $this yii\web\View */
-use sjaakp\gcharts\PieChart;
+use sjaakp\gcharts\BarChart;
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-<?= PieChart::widget([
+<?= BarChart::widget([
     'height' => '400px',
     'dataProvider' => $dataProvider,
     'columns' => [
-        'barang.nama_barang:string',
-        [
-                'label' => 'Total Retur',
-                'value' => function($data) {
-                    $retur = \app\models\Retur::find()->where(['barang_id' => $data->id])->andWhere(['status' => \app\models\Retur::selesai])->all();
-                    $totRet = 0;
-                    foreach ($retur as $r) {
-                        $totRet += $r->qty;
-                    }
-                    return $totRet;
-                }
-            ],
+        'nama_barang:string',
+        'barang'
     ],
     'options' => [
-        'title' => 'Countries by Population'
-    ],
+        'title' => 'Penjualan'    
+        ],
 ]) ?>
 <!--    <div class="jumbotron">
         <h1>Congratulations!</h1>
