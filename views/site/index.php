@@ -5,6 +5,7 @@ use sjaakp\gcharts\BarChart;
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
+    <?php if(Yii::$app->user->identity->level == app\models\User::Admin || Yii::$app->user->identity->level == app\models\User::pimpinan || Yii::$app->user->identity->level == app\models\User::karyawan): ?>
 <?= BarChart::widget([
     'height' => '400px',
     'dataProvider' => $dataProvider,
@@ -16,48 +17,72 @@ $this->title = 'My Yii Application';
         'title' => 'Penjualan'    
         ],
 ]) ?>
-<!--    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+<?php else:?>
+    <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <!-- small box -->
+          <div class="small-box bg-red-active">
+            <div class="inner">
+              <h3><?= $beli_kirim?></h3>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+              <p>Barang dalam pengiriman</p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <div class="icon">
+              <i class="fa fa-send"></i>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+<!--            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>-->
+          </div>
         </div>
+        <div class="col-lg-6 col-xs-12">
+          <!-- small box -->
+          <div class="small-box bg-red-active">
+            <div class="inner">
+              <h3><?= $beli_selesai?></h3>
 
-    </div>-->
+              <p>Barang diterima toko</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-check-square"></i>
+            </div>
+<!--            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>-->
+          </div>
+        </div>
+        <div class="col-lg-6 col-xs-12">
+          <!-- small box -->
+          <div class="small-box bg-red-active">
+            <div class="inner">
+              <h3><?= $retur_kirim?></h3>
+
+              <p>Barang retur dikirim</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-send-o"></i>
+            </div>
+<!--            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>-->
+          </div>
+        </div>
+        <div class="col-lg-6 col-xs-12">
+          <!-- small box -->
+          <div class="small-box bg-red-active">
+            <div class="inner">
+              <h3><?= $retur_selesai?></h3>
+
+              <p>Barang retur diterima toko</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-check-square-o"></i>
+            </div>
+<!--            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>-->
+          </div>
+        </div>
+    </div>
+<?php endif; ?>
 </div>

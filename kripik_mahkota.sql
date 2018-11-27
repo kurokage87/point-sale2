@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2018 at 03:11 PM
+-- Generation Time: Nov 27, 2018 at 05:05 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -47,7 +47,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama_barang`, `barang_satuan`, `harga_modal`, `harga_jual`, `stock`, `min_stock`, `tgl_input`, `tgl_last_update`, `kategori_id`, `user_id`) VALUES
-(1, 'Kripik Balado', 'Kg', 10000, 15000, '15', '5', NULL, '2018-10-14 19:19:31', 1, 2),
+(1, 'Kripik Balado', 'Kg', 10000, 15000, '15', '5', NULL, '2018-10-14 19:19:31', 1, 4),
 (2, 'Kripik Sanjay', 'Kg', 9000, 13000, '10', '5', '2018-10-14 19:21:31', NULL, 2, 2),
 (3, 'Pancake Durian', 'Buah', 15000, 20000, '10', '3', '2018-10-14 19:22:27', NULL, 1, 2),
 (4, 'Krupuk Delapan', 'Kg', 5000, 10000, '100', '5', '2018-11-03 23:16:27', '2018-11-03 17:11:21', 2, 2);
@@ -72,8 +72,8 @@ CREATE TABLE `beli_supplier` (
 --
 
 INSERT INTO `beli_supplier` (`id`, `no_faktur`, `tgl_beli`, `supplier_id`, `kode_pembelian`, `status`) VALUES
-(1, 'MHKTSUP0311201800001', '2018-11-03', 2, 'KDBELI00001', 0),
-(2, 'MHKTSUP0311201800002', '2018-11-03', 2, 'KDBELI00002', 1);
+(1, 'MHKTSUP1811201800001', '2018-11-18', 2, 'KDBELI00001', 1),
+(2, 'MHKTSUP2511201800002', '2018-11-25', 2, 'KDBELI00002', 1);
 
 -- --------------------------------------------------------
 
@@ -109,19 +109,19 @@ CREATE TABLE `detail_beli_supplier` (
   `jumlah` int(11) DEFAULT NULL,
   `beli_sup_id` int(11) DEFAULT NULL,
   `tgl_kadaluarsa` date DEFAULT NULL,
-  `status` smallint(1) NOT NULL
+  `status` smallint(1) NOT NULL,
+  `tgl_kirim` timestamp NULL DEFAULT NULL,
+  `tgl_terima` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `detail_beli_supplier`
 --
 
-INSERT INTO `detail_beli_supplier` (`id`, `no_faktur`, `barang_id`, `jumlah`, `beli_sup_id`, `tgl_kadaluarsa`, `status`) VALUES
-(1, NULL, 1, 12, 1, '2018-11-27', 5),
-(2, NULL, 2, 11, 1, '2018-11-28', 5),
-(3, NULL, 1, 11, 2, '2018-11-28', 5),
-(4, NULL, 2, 11, 2, '2018-11-28', 1),
-(5, NULL, 3, 11, 2, '2018-11-26', 1);
+INSERT INTO `detail_beli_supplier` (`id`, `no_faktur`, `barang_id`, `jumlah`, `beli_sup_id`, `tgl_kadaluarsa`, `status`, `tgl_kirim`, `tgl_terima`) VALUES
+(1, NULL, 2, 13, 1, NULL, 7, NULL, NULL),
+(2, NULL, 3, 14, 1, '2018-11-14', 3, '2018-11-26 23:45:11', '2018-11-26 23:38:33'),
+(3, NULL, 4, 11, 2, '2018-12-01', 3, '2018-11-26 23:45:45', '2018-11-26 23:39:15');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,10 @@ CREATE TABLE `detail_jual` (
 INSERT INTO `detail_jual` (`id`, `penjualan_id`, `barang_id`, `qty`, `total`) VALUES
 (1, 1, 2, 11, NULL),
 (2, 1, 1, 11, NULL),
-(3, 2, 1, 11, NULL);
+(3, 2, 1, 11, NULL),
+(4, 2, 4, 80, NULL),
+(5, 3, 3, 12, NULL),
+(6, 3, 4, 11, NULL);
 
 -- --------------------------------------------------------
 
@@ -212,7 +215,8 @@ CREATE TABLE `penjualan` (
 
 INSERT INTO `penjualan` (`id`, `no_faktur`, `tgl_jual`, `total_jual`, `jumlah_uang`, `kembalian`, `user_id`, `keterangan`) VALUES
 (1, 'MHKT0311201800002', '2018-11-03 02:57:33', 308000, 320000, 12000, 1, ''),
-(2, 'MHKT0311201800003', '2018-11-03 03:37:47', 165000, 170000, 5000, 1, '');
+(2, 'MHKT0311201800003', '2018-11-03 03:37:47', 165000, 170000, 5000, 1, ''),
+(3, 'MHKT2411201800004', '2018-11-24 20:48:24', 350000, 400000, 50000, 3, '');
 
 -- --------------------------------------------------------
 
@@ -235,7 +239,8 @@ CREATE TABLE `profil` (
 INSERT INTO `profil` (`id`, `nama_supplier`, `alamat`, `no_telp`, `user_id`) VALUES
 (1, 'Admin', 'adminalksndald alsd ', '08122416684', 1),
 (2, 'karyawan', 'mahkota', '1234', 3),
-(3, 'Supplier', 'askdnalsdkna', '12313', 2);
+(3, 'Supplier', 'askdnalsdkna', '12313', 2),
+(4, 'Ower', 'asdasdasd', '1231231312', 4);
 
 -- --------------------------------------------------------
 
@@ -250,18 +255,21 @@ CREATE TABLE `retur` (
   `qty` int(11) DEFAULT NULL,
   `subtotal` double DEFAULT NULL,
   `keterangan` text,
-  `status` smallint(1) DEFAULT NULL
+  `status` smallint(1) DEFAULT NULL,
+  `tgl_kirim` datetime DEFAULT NULL,
+  `tgl_terima` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `retur`
 --
 
-INSERT INTO `retur` (`id`, `tgl_retur`, `barang_id`, `qty`, `subtotal`, `keterangan`, `status`) VALUES
-(1, '2018-11-04 10:44:24', 1, 12, 180000, 'asdasdadas', 2),
-(2, '2018-11-04 10:44:26', 1, 12, 180000, 'asdasdadas', 2),
-(3, '2018-11-04 10:44:38', 4, 12, 120000, 'Barang hancur karena packing kurang baik dan ekspedisi yg tidak rapih', 2),
-(4, '2018-11-04 11:31:37', 2, 1111, 22220000, 'asdasdasd', 2);
+INSERT INTO `retur` (`id`, `tgl_retur`, `barang_id`, `qty`, `subtotal`, `keterangan`, `status`, `tgl_kirim`, `tgl_terima`) VALUES
+(1, '2018-11-24 18:29:05', 3, 12, 240000, 'Barang Rusak', 4, NULL, NULL),
+(2, '2018-11-24 18:29:07', 2, 11, 143000, 'wdasdasd', 4, NULL, NULL),
+(3, '2018-11-24 18:29:11', 4, 11, 110000, 'asdadsasd', 4, NULL, NULL),
+(6, '2018-11-25 15:21:01', 2, 11, 143000, 'asdadad', 4, NULL, NULL),
+(7, '2018-11-27 15:58:53', 4, 11, 110000, 'asdasdasdad', 3, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -394,12 +402,12 @@ ALTER TABLE `beli_supplier`
 -- AUTO_INCREMENT for table `detail_beli_supplier`
 --
 ALTER TABLE `detail_beli_supplier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `detail_jual`
 --
 ALTER TABLE `detail_jual`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `kategori`
 --
@@ -409,17 +417,17 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `profil`
 --
 ALTER TABLE `profil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `retur`
 --
 ALTER TABLE `retur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `user`
 --

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?php //  Html::a(Yii::t('app', 'Create Detail Beli Supplier'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    
     <?php
     if (Yii::$app->user->identity->id == app\models\User::supplier) :
         echo GridView::widget([

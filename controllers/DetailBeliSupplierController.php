@@ -94,6 +94,7 @@ class DetailBeliSupplierController extends Controller
     public function actionSelesai($id){
         $model = $this->findModel($id);
         $model->status = DetailBeliSupplier::selesai;
+        $model->tgl_terima = date('Y-m-d H:i:s');
         $model->save();
         return $this->redirect('terima-karyawan');
     }
@@ -150,7 +151,12 @@ class DetailBeliSupplierController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
+            if ($model->status == DetailBeliSupplier::dikirim):
+                $model->tgl_kirim = date('Y-m-d H:i:s');
+                $model->save();
+            endif;
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

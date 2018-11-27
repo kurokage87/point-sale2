@@ -12,7 +12,8 @@ use app\models\ContactForm;
 use app\models\SignupForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
-
+use app\models\DetailBeliSupplier;
+use app\models\Retur;
 class SiteController extends Controller
 {
     /**
@@ -71,9 +72,17 @@ class SiteController extends Controller
 	    'pagination' => false
 	]);
         
+        $beli_kirim = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => DetailBeliSupplier::dikirim])->count();
+        $beli_selesai = DetailBeliSupplier::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => DetailBeliSupplier::selesai])->count();
+        $retur_kirim = Retur::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => Retur::dikirim])->count();
+        $retur_selesai = Retur::find()->joinWith('barang')->where(['barang.user_id' => \Yii::$app->user->identity->id])->andWhere(['status' => Retur::selesai])->count();
         return $this->render('index',[
 //            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'beli_kirim' => $beli_kirim,
+            'beli_selesai' => $beli_selesai,
+            'retur_kirim' => $retur_kirim,
+            'retur_selesai' => $retur_selesai
         ]);
     }
 

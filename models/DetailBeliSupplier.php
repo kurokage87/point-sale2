@@ -14,6 +14,8 @@ use Yii;
  * @property int $beli_sup_id
  * @property string $tgl_kadaluarsa
  * @property integer $status Description
+ * @property string $tgl_kirim
+ * @property string $tgl_terima
  *
  * @property Barang $barang
  * @property BeliSupplier $beliSup
@@ -64,7 +66,7 @@ class DetailBeliSupplier extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tgl_kadaluarsa'],'safe'],
+            [['tgl_kadaluarsa','tgl_kirim','tgl_terima'],'safe'],
             ['updateType', 'required', 'on' => self::SCENARIO_BATCH_UPDATE],
             ['updateType', 
                 'in',
@@ -90,7 +92,9 @@ class DetailBeliSupplier extends \yii\db\ActiveRecord
             'jumlah' => 'Jumlah',
             'beli_sup_id' => 'Beli Sup ID',
             'tgl_kadaluarsa' => 'Tanggal Kadaluarsa',
-            'status' => 'Status'
+            'status' => 'Status',
+            'tgl_kirim' =>'Tanggal Kirim',
+            'tgl_terima' => 'Tanggal Terma'
         ];
     }
 
